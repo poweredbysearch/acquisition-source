@@ -1,18 +1,18 @@
 {
-  "name": "{{ packageName }}",
+  "name": "acquisition-source",
   "description": "{{ packageDescription }}",
-  "main": "build/index.js",
+  "main": "build/acquisition-source.js",
   "scripts": {
     "init": "rimraf .validate.json && rimraf .jshintrc",
     "clean": "rimraf build && mkdir -p build/test",
     "lint": "eslint source && eslint test",
     "prebuild": "npm run clean",
     "build": "babel -d build source -s && babel -d build/test test",
-    "test": "node build/test/index.js",
+    "test": "node build/test/acquisition-source.js",
     "cov": "npm run cov:clean && npm run cov:build && npm run cov:generate",
     "cov:clean": "rimraf coverage && rimraf coverage-build && mkdir -p coverage-build",
     "cov:build": "babel -d coverage-build source --auxiliary-comment-before='istanbul ignore next' && babel -d coverage-build/test test",
-    "cov:generate": "istanbul cover coverage-build/test/index.js && rimraf coverage-build",
+    "cov:generate": "istanbul cover coverage-build/test/acquisition-source.js && rimraf coverage-build",
     "prepublish": "npm run build",
     "validate": "npm run lint && npm run build && npm test",
     "validate-dev": "npm run lint && npm run build && npm test | faucet",
@@ -39,5 +39,8 @@
     "precommit-hook": "^2.0.1",
     "rimraf": "^2.4.0",
     "tape": "^4.0.0"
+  },
+  "dependencies": {
+    "cookies-js": "^1.2.1"
   }
 }
