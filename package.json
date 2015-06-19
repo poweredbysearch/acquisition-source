@@ -41,6 +41,7 @@
     "tape": "^4.0.0"
   },
   "dependencies": {
-    "cookies-js": "^1.2.1"
+    "cookies-js": "^1.2.1",
+    "url": "^0.10.3"
   }
 }
