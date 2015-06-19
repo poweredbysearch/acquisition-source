@@ -16,7 +16,9 @@ let acquisition;
  */
 let settings = {
     cookieName: 'acqsrc',
-    cookiePath: '/'
+    cookiePath: '/',
+    referrer: document.referrer,
+    location: location.href
 };
 
 /**
@@ -42,14 +44,14 @@ init();
  *
  * @return {[type]} [description]
  */
-function acquireSource () {
-    let thisUrl = url.parse(location.href, true),
-        referrerUrl = url.parse(document.referrer);
+function doAcquire () {
+    let thisUrl = url.parse(settings.location, true);
+    let referrerUrl = url.parse(settings.referrer);
 
     if (acquisition !== null && typeof acquisition === 'object') {
         return acquisition;
     } else if (referrerUrl.hostname === thisUrl.hostname) {
-        return false;
+        return undefined;
     } else {
         acquisition = getAcquisition(thisUrl, referrerUrl);
         return acquisition;
@@ -60,11 +62,25 @@ function hasUtmParams (query) {
     return query.hasOwnProperty('utm_source') || query.hasOwnProperty('utm_medium');
 }
 
+function hasGclid (query) {
+    return query.hasOwnProperty('gclid');
+}
+
 function getAcquisition (thisUrl, referrerUrl) {
     if (hasUtmParams(thisUrl.query)) {
-        return parseUtm(thisUrl.query);
-    } else {
+        return parseUtm(thisUrl.query, referrer);
+    } else if (hasGclid(this.url.query)) {
+        return {
+            source: 'google',
+            medium: 'ppc'
+        };
+    } else if (referrerUrl.hostname !== null) {
         return parseReferrer(referrerUrl);
+    } else {
+        return {
+            source: '(direct)',
+            medium: '(none)'
+        };
     }
 }
 
@@ -85,7 +101,7 @@ const acquisitionSource = {
     },
 
     acquire (overrides = {}) {
-        return acquireSource(Object.assign(settings, overrides));
+        return doAcquire(Object.assign(settings, overrides));
     },
 
     parseReferrer,

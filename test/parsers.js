@@ -42,4 +42,28 @@ export default function run () {
         assert.end();
     });
 
+    test('Correctly identifies Google Organic referrals', (assert) => {
+        assert.deepEqual(
+            parseReferrer(url.parse('https://www.google.ca/?gfe_rd=cr&ei=ClSEVfnHIquC8Qf1_4GACg&gws_rd=ssl')),
+            {
+                source: 'google',
+                medium: 'organic'
+            }
+        );
+
+        assert.end();
+    });
+
+    test('Correctly identifies facebook referrals', (assert) => {
+        assert.deepEqual(
+            parseReferrer(url.parse('https://m.facebook.com/wtf/lol/foobar')),
+            {
+                source: 'facebook',
+                medium: 'social'
+            }
+        );
+
+        assert.end();
+    });
+
 }
