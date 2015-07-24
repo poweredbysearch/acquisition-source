@@ -69,7 +69,7 @@ function hasGclid (query) {
 function getAcquisition (thisUrl, referrerUrl) {
     if (hasUtmParams(thisUrl.query)) {
         return parseUtm(thisUrl.query, referrer);
-    } else if (hasGclid(this.url.query)) {
+    } else if (hasGclid(thisUrl.query)) {
         return {
             source: 'google',
             medium: 'ppc'
