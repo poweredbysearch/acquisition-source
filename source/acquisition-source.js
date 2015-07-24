@@ -7,7 +7,7 @@ import {parseReferrer, parseUtm} from './parsers';
 /**
  * The deliverable
  */
-let acquisition;
+let acquisition = null;
 
 /**
  * Settings
@@ -18,7 +18,8 @@ let settings = {
     cookieName: 'acqsrc',
     cookiePath: '/',
     referrer: typeof document !== 'undefined' ? document.referrer : null,
-    location: typeof location !== 'undefined' ? location.href : null
+    location: typeof location !== 'undefined' ? location.href : null,
+    expires: 604800
 };
 
 /**
@@ -50,12 +51,14 @@ function doAcquire () {
 
     if (acquisition !== null && typeof acquisition === 'object') {
         return acquisition;
-    } else if (referrerUrl.hostname === thisUrl.hostname) {
-        return undefined;
-    } else {
-        acquisition = getAcquisition(thisUrl, referrerUrl);
-        return acquisition;
     }
+
+    acquisition = getAcquisition(thisUrl, referrerUrl);
+    cookies.set(settings.cookieName, JSON.stringify(acquisition), {
+      path: settings.cookiePath,
+      expires: settings.expires
+    });
+    return acquisition;
 }
 
 function hasUtmParams (query) {
@@ -74,7 +77,7 @@ function getAcquisition (thisUrl, referrerUrl) {
             source: 'google',
             medium: 'ppc'
         };
-    } else if (referrerUrl.hostname !== null) {
+    } else if (referrerUrl.hostname !== null && referrerUrl.hostname !== thisUrl.hostname) {
         return parseReferrer(referrerUrl);
     } else {
         return {
