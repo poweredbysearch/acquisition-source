@@ -17,14 +17,15 @@ let acquisition;
 let settings = {
     cookieName: 'acqsrc',
     cookiePath: '/',
-    referrer: document.referrer,
-    location: location.href
+    referrer: typeof document !== 'undefined' ? document.referrer : null,
+    location: typeof location !== 'undefined' ? location.href : null
 };
 
 /**
  * Initialize all the things!
  */
 function init () {
+  console.log(cookies);
     let currentCookie = cookies.get(settings.cookieName);
 
     if (typeof currentCookie === 'string') {

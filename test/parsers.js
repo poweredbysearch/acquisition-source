@@ -1,8 +1,8 @@
 'use strict';
 
-import test from 'tape';
+import test from 'blue-tape';
 import url from 'url';
-import {parseReferrer, parseUtm} from '../parsers';
+import {parseReferrer, parseUtm} from '../source/parsers';
 
 export default function run () {
 

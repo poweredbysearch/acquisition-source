@@ -1,9 +1,8 @@
 'use strict';
 
-import test from 'tape';
+import test from 'blue-tape';
 import parserTest from './parsers';
 
-// import acquisitionSource from '../acquisition-source';
 parserTest();
 
 test('Tests run', (assert) => {
