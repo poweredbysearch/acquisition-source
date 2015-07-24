@@ -25,7 +25,6 @@ let settings = {
  * Initialize all the things!
  */
 function init () {
-  console.log(cookies);
     let currentCookie = cookies.get(settings.cookieName);
 
     if (typeof currentCookie === 'string') {
